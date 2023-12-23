@@ -48,6 +48,7 @@ ul {
 }
 
 
+
 /* 고객센터 */
 .cs_layout {
   width: 100%;
@@ -67,3 +68,11 @@ ul {
   cursor: pointer;
 }
 
+
+.cs_menu div:hover {
+  background-color: #f0f0f0;
+}
+
+.cs_notice_li:hover {
+  background-color: #f0f0f0;
+}

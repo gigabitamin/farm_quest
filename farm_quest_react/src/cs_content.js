@@ -10,7 +10,7 @@ const NoticeItem = ({ date, content }) => {
   };
 
   return (
-    <li onClick={toggleExpand} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+    <li onClick={toggleExpand} style={{ cursor: 'pointer', textDecoration: 'none' }} class="cs_notice_li">
       {date} - {content}
       {isExpanded && (
         <div>
@@ -61,9 +61,7 @@ const CSFAQ = () => (
 const CS1vs1 = () => (
   <div>
     <h2>1:1 문의</h2>
-    <p>빠른 답변을 원하시면 카카오톡 상담하기를 이용해주세요</p>
     <p>문의에 대한 답변은 기입하신 이메일로 발송됩니다</p>
-    <hr></hr>
     <br></br>
     <form>
       <label>이름:</label>
