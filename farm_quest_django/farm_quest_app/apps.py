@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class FarmQeustAppConfig(AppConfig):
+class FarmQuestAppConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "farm_qeust_app"
+    name = "farm_quest_app"

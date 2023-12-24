@@ -1,0 +1,64 @@
+{% load static %}
+{% load youtube_filters %}
+
+
+<!-- 카카오톡 메세지 공유 기능 / 작업용 페이지 - kdy-->
+<!-- {% include "./kakao_message.html" %} -->
+
+{% block content %}
+
+{% include "./youtube_all_lists_nav.html" %}
+
+    <!-- 카카오톡 메세지 공유 script 시작 -kdy -->    
+    <!-- 템플릿 버젼 --> 
+    <script type='text/javascript'>    
+        Kakao.init('343f2a0aad277d4c91a920f6892a8e25');
+        Kakao.Link.createScrapButton({ 
+            container: '#kakao_message_t_btn',
+            requestUrl: 'https://127.0.0.1:8000', // 개발자센터 도메인 설정과 django 도메인 설정 모두 맞춰줄 것, localhost에서도 정상 구동
+            templateId : 99822
+        });    
+    </script>
+    <!-- 카카오톡 메세지 공유 scpript 끝 -->
+
+
+<!-- 커스텀 content 메세지 --> 
+<!--
+<div class="kakao_message_c_btn">    
+    <a><img src="{% static 'img/kakao_disign/kakaotalk_sharing_btn/kakaotalk_sharing_btn_medium.png' %}" title="커스텀 메세지"/></a>
+</div> {% endcomment %}
+
+<script type="text/javascript">
+    Kakao.init('343f2a0aad277d4c91a920f6892a8e25');
+    Kakao.Link.createDefaultButton({
+        container: '.kakao_message_c_btn',
+        requestUrl: 'https://127.0.0.1:8000',
+        objectType: 'feed',
+        content: {
+            title: '제주도 관광 맛집',
+            description: '#흑돼지 #감귤 #연돈',
+            imageUrl: '../../static/img/kdy/jeju/food/yeondon.png', // js 안에서 static 경로 안먹히니 ../ 상대 경로로 찾아갈 것
+            link: {mobileWebUrl: 'https://127.0.0.1:8000', webUrl: 'https://127.0.0.1:8000',}
+        },
+        social: {
+            after_review_rating: 3.8,
+            after_review_count: 587,
+            review_Count: 1230
+        },
+        buttons: [{
+            title: 'MAP에서 보기',
+            link: {mobileWebUrl: 'https://place.map.kakao.com/m/1890778114', webUrl: 'https://place.map.kakao.com/1890778114'} // 모바일버전 /m 추가
+        },
+        {
+            title: 'InnEats에서 보기',
+            link: {mobileWebUrl: 'https://127.0.0.1:8000', webUrl: 'https://127.0.0.1:8000'}
+        }]
+    });
+</script>
+-->
+
+
+
+
+{% endblock content %}
+

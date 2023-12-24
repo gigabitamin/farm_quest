@@ -1,0 +1,43 @@
+{% load static %}
+
+{% block content %}  
+
+    <!-- 네비 시작 -->
+    <nav class="nav-bar">
+        <nav class="navbar navbar-expand-lg">
+            <a href="{% url 'index' %}" class="navbar-brand d-flex">
+
+            </a>
+
+           
+            <div class="navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+               
+
+
+                    
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">메뉴</a>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'customer_service_center' %}" class="nav-item nav-link">고객센터<br><br></a>
+                        </div>
+                    </div> 
+
+                    
+
+                    <a href="{% url 'customer_service_center' %}" class="nav-item nav-link">고객센터<br><br></a>                   
+
+                    {% comment %} 로그인 user만 마이페이지에 접근가능, 로그인 안한 사용자의 경우 자동으로 로그인 창으로 리다이렉트 {% endcomment %}                    
+                    <a href="{% url 'sign_in' %}" class="nav-item nav-link">개인 페이지</a>
+
+
+                </div>
+               
+            </div>
+
+        </nav>
+    </nav>
+    <!-- 네비 끝 -->
+
+{% endblock content %}

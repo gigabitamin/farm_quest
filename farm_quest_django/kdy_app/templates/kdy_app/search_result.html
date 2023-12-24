@@ -1,0 +1,71 @@
+{% load static %}
+{% load youtube_filters %}
+
+
+<!-- 공동 검색 기능 / 작업용 페이지 - kdy-->
+<!-- {% include "./search_result.html" %} -->
+
+
+{% block content %}
+
+{% include "./youtube_all_lists_nav.html" %}
+
+{% comment %} <script>
+// 키워드 변수 처리
+// keyword1 = '제주도'
+// 사용자 입력 받기
+let user_input = prompt("검색어를 입력하세요:");  // JavaScript prompt로 사용자 입력 받음
+if (user_input) {
+    // JavaScript로 URL로 인코딩된 검색어 생성
+    let keyword1 = encodeURIComponent(user_input);
+        
+    // 사용자가 입력한 검색어를 표시
+    console.log("사용자 입력 검색어: " + user_input);
+
+    // Django 템플릿을 사용하여 동적 URL 생성
+    let root_url = "http://127.0.0.1:8000/"
+    let blog_url = "blog/list/?keyword=" + keyword1; + "/"
+
+    // 생성된 URL로 이동
+    window.location.href = root_url+blog_url;
+}
+</script> {% endcomment %}
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let search_result_link = document.getElementById("search_place");
+
+    // #search_place 요소에 클릭 이벤트 리스너를 추가합니다.
+    blogListNavLink.addEventListener("click", function(event) {
+        // 링크의 기본 동작을 막습니다.
+        event.preventDefault();
+
+        // 사용자로부터 키워드를 입력받습니다.
+        let user_input = prompt("검색어를 입력하세요:");
+
+        if (user_input) {
+            // 사용자 입력된 키워드를 JavaScript로 인코딩합니다.
+            let keyword1 = encodeURIComponent(user_input);
+            let root_url = "http://127.0.0.1:8000/";            
+
+            // 키워드를 포함한 URL을 만듭니다.
+            let blog_url = root_url + "blog/list/?keyword=" + keyword1; + "/"'
+
+            // 만들어진 URL로 이동합니다.
+            window.location.href = blog_url;
+        }
+    });
+});
+</script>
+
+
+<div>
+<label for="search_place">검색창</label>
+<input type="text" id="search_place" name="search_place" placeholder="검색하실 장소를 입력하세요">
+<input type="submit" value="검색">
+</div>
+
+
+{% endblock content %}
+

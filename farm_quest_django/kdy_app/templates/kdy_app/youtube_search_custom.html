@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load youtube_filters %}   
+
+{% include "./youtube_all_lists_nav.html" %}
+
+<h2>유투브 검색 Custom</h2>
+<form id='ytbSearchFrmCst' method="post" action="{% url 'youtube_search_custom' %}">
+    {% csrf_token %}
+    <select name="type" id="type_custom">
+        <option value="">유투브 리스트 검색조건 선택</option>
+        <option value="youtube_title">제목</option>
+        <option value="youtube_channel_name">채널명</option>
+        <option value="youtube_hashtag">해시태그</option>
+    </select>
+    <input type="text" name="keyword">
+    <input type="submit" value="검색">
+</form><br><br>
+
+{% if youtube_list %}
+
+<h2>유투브 리스트 조회</h2>
+<table id="youtube_all_lists">
+<tr>
+    <th></th>
+    <th>youtube_id</th>
+    <th>youtube_title</th>
+    <th>youtube_link</th>
+    <th>youtube_image</th>
+    <th>youtube_hashtag</th>
+    <th>youtube_channel_name</th>
+    <th>youtube_channel_count</th>
+    <th>youtube_content_like_count</th>
+    <th>youtube_comment_like_count</th>
+    <th>youtube_content_date</th>
+</tr>
+{% for youtube in youtube_all_lists %}
+<tr>
+    <td><a href="{% url 'youtube_all_detail' youtube_id %}">{{ youtube.youtube_id  }}</a></td>
+    <td>{{ youtube.youtube_title }}</td>
+    <td>{{ youtube.youtube_link }}</td>
+    <td><img src="{{ youtube.youtube_image }}"/></td>
+    <td>{{ youtube.youtube_hashtag }}</td>
+    <td>{{ youtube.youtube_channel_name }}</td>        
+    <td>{{ youtube.youtube_channel_count|intcomma }}</td>
+    <td>{{ youtube.youtube_content_like_count|intcomma }}</td>
+    <td>{{ youtube.youtube_comment_like_count|intcomma }}</td>
+    <td>{{ youtube.youtube_date }}</td>
+{% endfor %}
+</table>
+
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% load youtube_filters %}
+
+
+<!-- base.html 랑 다른 title -->
+{% block title %} {{ user_info.username }} 님의 마이페이지 {% endblock %}
+
+{% block content %} 
+
+{% comment %} {% include "./my_page_nav.html" %} {% endcomment %}
+{% comment %} if is_superusr == True 이면 유저 정보 삭제 권한 등이 있는 admin 페이지 출력 {% endcomment %}
+
+
+<div class="sign_up_box">
+    <form action="#" method="post">
+    <br><div><h1>{{ user_info.username }} 님의 마이 페이지</h1></div><br>
+        {% csrf_token %}
+        <table id="my_page_table">
+            <tr><th class='lbl'>회원 번호</th><td>{{user_info.id}}</td></tr>
+            {% comment %} <tr><th class='lbl'>프로필 이미지</th><td><button type="submit" name ='sign_up_upload_image'></td></tr> {% endcomment %}
+            <tr><th class='lbl'>가입 날짜</th><td>{{ user_info.date_joined }}</td></tr>
+            <tr><th class='lbl'>마지막 접속 날짜</th><td>{{ user_info.last_login }}</td></tr>
+            <tr><th class='lbl'>아이디</th><td>{{ user_info.username }}</td></tr>
+            <tr><th class='lbl'>이메일</th><td>{{ user_info.email }}</td></tr>
+            {% comment %} <tr><th class='lbl'>패스워드</th><td><input type="password" name ='password'></td></tr> {% endcomment %}
+            <tr><th class='lbl'>성명</th><td>{{ user_info.user_name }}</td></tr>
+            <tr><th class='lbl'>전화번호</th><td>{{ user_info.user_phone }}</td></tr>
+            <tr><th class='lbl'>주소</th><td>{{ user_info.user_address }}</textarea></td></tr>
+            <tr><th class='lbl'>선호 여행 지역</th><td>{{user_info.preferred_region_no.preferred_region}}</td></tr>
+            <tr><th class='lbl'>선호 숙박 형태</th><td>{{user_info.preferred_accommodation_type_no.preferred_accommodation_type}}</td></tr>
+            <tr><th class='lbl'>선호 여행 테마</th><td>{{user_info.preferred_tour_theme_type_no.preferred_tour_theme_type}}</td></tr>
+        </table>
+    </form>  
+</div>
+<div class="sign_up_box" class="btn-primary">
+    <a href="{% url 'my_page_update' user_info.id %}">
+        <button id=myPageUpdateBtn type="submit" class="btn-primary">회원 정보 수정</button></a>
+    <a href="{% url 'my_page_delete_move' user_info.id %}">
+        <button id=myPageUpdateBtn type="submit">회원 탈퇴</button></a> 
+</div>
+
+
+
+
+<div class="sign_up_box">
+
+</div>
+
+{% comment %} <div class="sign_up_box" class="btn-primary">
+    <a href="{% url 'my_page_update_email' user_info.id %}">
+        <button id=myPageUpdateBtn_email type="submit" class="btn-primary">이메일 수정</button></a>
+</div>
+
+<div class="sign_up_box">    
+    <form action="{% url 'my_page_update_email' user_info.id %}" method="post">{% csrf_token %}<button id=myPageUpdateBtn type="submit" class="btn-primary">이메일 수정</button></form>
+    <form action="{% url 'my_page_update_password' user_info.id %}" method="post">{% csrf_token %}<button id=myPageUpdateBtn type="submit" class="btn-primary">비밀번호 수정</button></form>
+    <form action="{% url 'my_page_update_user_name' user_info.id %}" method="post">{% csrf_token %}<button id=myPageUpdateBtn type="submit" class="btn-primary">성명 수정</button></form>
+    <form action="{% url 'my_page_update_user_phone' user_info.id %}" method="post">{% csrf_token %}<button id=myPageUpdateBtn type="submit" class="btn-primary">전화번호 수정</button></form>
+    <form action="{% url 'my_page_update_user_address' user_info.id %}" method="post">{% csrf_token %}<button id=myPageUpdateBtn type="submit" class="btn-primary">주소 수정</button></form>    
+    <form action="{% url 'my_page_update_preferred_region_no' user_info.id %}" method="post">{% csrf_token %}<button id=myPageUpdateBtn type="submit" class="btn-primary">선호 타입</button></form>
+</div> {% endcomment %}
+
+
+
+<h1 style="text-align:center;">검색 트렌드</h1>
+<div class="sign_up_box">
+    <div>
+        <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3523_RC02/embed_loader.js"></script> 
+        <script type="text/javascript"> trends.embed.renderExploreWidget("RELATED_QUERIES", {"comparisonItem":[{"keyword":
+        "{{user_info.preferred_accommodation_type_no.preferred_accommodation_type}} {{user_info.preferred_tour_theme_type_no.preferred_tour_theme_type}}","geo":"KR","time":"2004-01-01 {{last_date_str}}"}],"category":0,"property":""}, {"exploreQuery":"q=%EC%A0%9C%EC%A3%BC%EB%8F%84%20%ED%98%B8%ED%85%94%20%EC%B6%94%EC%B2%9C&date=all&geo=KR","guestPath":"https://trends.google.co.kr:443/trends/embed/"}); </script>
+    </div>
+    <div class="sign_up_box">
+        <img src="data:image/png;base64,{{ img_data }}" alt="월 별 검색어 트렌드 그래프">
+    </div>
+</div>
+
+
+
+
+{% comment %} 검색 키워드 트렌드 {% endcomment %}
+<div>    
+    <div id="google_trend">
+        <p>구글 트렌드</p>
+        <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3523_RC02/embed_loader.js"></script> 
+        <script type="text/javascript"> trends.embed.renderExploreWidget("RELATED_QUERIES", {"comparisonItem":[{"keyword":
+        "{{user_info.preferred_accommodation_type_no.preferred_accommodation_type}} {{user_info.preferred_tour_theme_type_no.preferred_tour_theme_type}}","geo":"KR","time":"2004-01-01 {{last_date_str}}"}],"category":0,"property":""}, {"exploreQuery":"q=%EC%A0%9C%EC%A3%BC%EB%8F%84%20%ED%98%B8%ED%85%94%20%EC%B6%94%EC%B2%9C&date=all&geo=KR","guestPath":"https://trends.google.co.kr:443/trends/embed/"}); </script>
+    </div>
+
+    <div>        
+        <p id="naver_trend_title">네이버 데이터랩</p>
+        <img src="data:image/png;base64,{{ img_data }}" alt="월 별 검색어 트렌드 그래프" id="naver_trend" title="클릭시 크게 확대됩니다" class="popup-trigger">
+    </div>
+</div>
+
+{% comment %} {{user_info.preferred_region_no.preferred_region}} {{user_info.preferred_accommodation_type_no.preferred_accommodation_type}} {{user_info.preferred_tour_theme_type_no.preferred_tour_theme_type}} {% endcomment %}
+
+
+
+{% comment %} 검색어 트렌드 네비게이션 css {% endcomment %}
+<style>
+#google_trend {
+    text-align:center;
+    width:200px;    
+    position: fixed;
+    bottom: 120px;
+    padding: 0;
+    margin: 0;
+}
+
+#naver_trend_title {
+    text-align:center;
+    width:200px;
+    position: fixed;
+    bottom: 100px;
+    padding: 0;
+    margin: 0;
+}
+
+#naver_trend {
+    width:200px;
+    position: fixed;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+}
+</style>
+
+
+
+
+{% comment %} 이미지 클릭 시 새 탭에서 이미지 열기 {% endcomment %}
+<script>
+document.querySelector(".popup-trigger").addEventListener("click", function () {
+    // 이미지 데이터 가져오기
+    const imageData = this.src;
+
+    // 새 탭 열기
+    const newTab = window.open();
+    newTab.document.write('<html><body><img src="' + imageData + '" /></body></html>');
+});
+</script>
+
+
+
+
+
+
+
+{% comment %} 팝업 레이아웃 {% endcomment %}
+<div id="image-popup" class="popup">
+    <div class="popup-content">
+        <img id="popup-image" src="data:image/png;base64,{{ img_data }}">
+        <span class="popup-close" id="close-popup">&times;</span>
+    </div>
+</div>
+
+<style>
+/* 팝업 스타일 */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.popup-content {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.popup img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+</style>
+
+<script>
+    // 이미지 요소 가져오기
+    let image = document.getElementById("popupImage");
+
+    // 이미지 클릭 시 팝업 열기
+    image.addEventListener("click", function() {
+        // 이미지 원본 URL (큰 화면) 설정
+        let imageUrl = "data:image/png;base64,{{ img_data }}";
+
+        // 팝업 창 열기
+        let popup = window.open(imageUrl, "ImagePopup", "width=1280px, height=720px");
+    });
+</script>
+
+
+
+
+
+
+
+{% endblock content %}
+

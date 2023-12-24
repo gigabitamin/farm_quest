@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load youtube_filters %}
+
+{% block content %}   
+
+{% include "./youtube_all_lists_nav.html" %}
+
+<div class="sign_up_box">
+
+    <form action="" method="post">
+    <br><div><h1>회원 정보 수정</h1></div><br>
+        {% csrf_token %}
+        <table id="sign_up2">
+            {% comment %} <tr>
+                <th class='lbl'>프로필 이미지</th>
+                <td><button type="submit" name ='sign_up_upload_image'></td>
+            </tr> {% endcomment %}
+            {% comment %} <tr>
+                <th class='lbl'>아이디</th>
+                <td><input type="text" name="username" value="{{ user_info.username }}"></td>
+            </tr><tr> {% endcomment %}
+                <th class='lbl'>이메일</th>
+                <td><input type="text" name='email' value="{{ user_info.email }}"></td>
+            </tr><tr>
+                <th class='lbl'>비밀번호</th>
+                <td><input type="password" name='password' value=""></td>
+            </tr><tr>                
+                <th class='lbl'>성명</th>
+                <td><input type="text" name='user_name' value="{{ user_info.user_name }}"></td>
+            </tr><tr>
+                <th class='lbl'>전화</th>
+                <td><input type="text" name='user_phone' value="{{ user_info.user_phone }}"></td>
+            </tr><tr>
+                <th class='lbl'>주소</th>
+                <td><textarea type="text" id=lbl_address name='{{ user_info.user_address }}' value="{{ user_info.user_address }}"></textarea></td>
+            </tr>
+            <tr>
+                <th class='lbl'>선호 여행 지역</th>
+                <td>{{user_form.preferred_region_no}}</td>
+            </tr><tr>
+                <th class='lbl'>선호 숙박 형태</th>
+                <td>{{user_form.preferred_accommodation_type_no}}</td>
+            </tr><tr>
+                <th class='lbl'>선호 여행 테마</th>
+                <td>{{user_form.preferred_tour_theme_type_no}}</td>
+            </tr>
+
+
+
+            {% comment %} <tr>
+                <th class='lbl'>선호 여행 지역</th>
+                <td>
+                    <select name="preferred_region_no">
+                        <option value="">선호 여행 지역을 선택하세요</option>
+                        {% for region in user_form.preferred_region_no.field.queryset %}
+                            <option value="{{ region_info.preferred_region_no }}" {% if region.preferred_region_no == user_info.preferred_region_no %} selected {% endif %}>{{ region.preferred_region }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class='lbl'>선호 숙박 형태</th>
+                <td>
+                    <select name="preferred_accommodation_type_no">
+                        <option value="">선호 숙박 형태를 선택하세요</option>
+                        {% for accommodation in user_form.preferred_accommodation_type_no.field.queryset %}
+                            <option value="{{ accommodation.preferred_accommodation_type_no }}" {% if accommodation.preferred_accommodation_type_no == user_info.preferred_accommodation_type_no %} selected {% endif %}>{{ accommodation.preferred_accommodation_type }}</option>
+                        {% endfor %}
+                    </select>                
+                </td>
+            </tr><tr>
+                <th class='lbl'>선호 여행 테마</th>
+                <td>
+                    <select name="preferred_tour_theme_type_no">
+                        <option value="">선호 여행 테마를 선택하세요</option>
+                        {% for tour in user_form.preferred_tour_theme_type_no.field.queryset %}
+                            <option value="{{ tour.preferred_tour_theme_type_no }}" {% if tour.preferred_tour_theme_type_no == user_info.preferred_tour_theme_type_no %} selected {% endif %}>{{ tour.preferred_tour_theme_type }}</option>
+                        {% endfor %}
+                    </select>                
+                </td>
+            </tr> {% endcomment %}
+        </table><br>
+        <button id=signUpBtn type="submit" class="btn-primary">수정 완료</button>
+    </form>
+</div>
+
+
+
+{% endblock content %}
+
+

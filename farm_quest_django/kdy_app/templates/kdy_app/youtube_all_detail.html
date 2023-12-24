@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load youtube_filters %}
+
+{% block content %}   
+
+{% include "./youtube_all_lists_nav.html" %}
+
+<h3>유투브 상세 조회</h3>
+
+<table id="youtube_all_detail">
+    <tr><th>youtube_id</th><td>{{ youtube.youtube_id }}</td></tr>
+    <tr><th>youtube_title</th><td>{{ youtube.youtube_title }}</td></tr>
+    <tr><th>youtube_link</th><td>{{ youtube.youtube_link }}</td></tr>
+    <tr><th>youtube_image</th><td><img src="{{ youtube.youtube_image }}"/></td></tr>
+    <tr><th>youtube_hashtag</th><td>{{ youtube.youtube_hashtag }}</td></tr>
+    <tr><th>youtube_channel_name</th><td>{{ youtube.youtube_channel_name }}</td></tr>
+    <tr><th>youtube_channel_count</th><td>{{ youtube.youtube_channel_count|intcomma }}</td></tr>
+    <tr><th>youtube_content_like_count</th><td>{{ youtube.youtube_content_like_count|intcomma }}</td></tr>
+    <tr><th>youtube_comment_like_count</th><td>{{ youtube.youtube_comment_like_count|intcomma }}</td></tr>
+    <tr><th>youtube_content_date</th><td>{{ youtube.youtube_content_date }}</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

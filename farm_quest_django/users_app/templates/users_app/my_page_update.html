@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load youtube_filters %}
+
+{% block content %}   
+
+{% include "./youtube_all_lists_nav.html" %}
+
+<div class="sign_up_box">    
+    <form method="post">
+        <br><div><h1>회원 정보 수정</h1></div><br>
+        {% csrf_token %}
+        <table id="form_tbl">
+            {{ user_form }}
+        </table><br>
+        <button id=signUpBtn1 type="submit" class="btn-primary">수정 완료</button>
+    </form>
+</div>
+
+
+
+
+
+{% endblock content %}
+

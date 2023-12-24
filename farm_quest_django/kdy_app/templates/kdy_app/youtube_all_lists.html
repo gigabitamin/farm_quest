@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% load youtube_filters %}
+
+{% block content %}
+
+<!-- 유투브 리스트 검색, 등록, 수정, 삭제 페이지 내비게이션 페이지 - kdy -->
+{% include "./youtube_all_lists_nav.html" %}
+
+   <h2>유투브 리스트 조회</h2>
+   <table id="youtube_all_lists">
+    <tr>
+        <th></th>
+        <th>youtube_id</th>
+        <th>youtube_title</th>
+        <th>youtube_link</th>
+        <th>youtube_image</th>
+        <th>youtube_hashtag</th>
+        <th>youtube_channel_name</th>
+        <th>youtube_channel_count</th>
+        <th>youtube_content_like_count</th>
+        <th>youtube_comment_like_count</th>
+        <th>youtube_youtube_content_date</th>
+    </tr>
+    {% for youtube in youtube_all_lists %}
+    <tr>
+        <td><a href="{% url 'youtube_all_detail' youtube.youtube_id %}">{{ youtube.youtube_id  }}</a></td>
+        <td>{{ youtube.youtube_title }}</td>
+        <td>{{ youtube.youtube_link }}</td>
+        <td>{{ youtube.youtube_image }}"</td>
+        <td>{{ youtube.youtube_hashtag }}</td>
+        <td>{{ youtube.youtube_channel_name }}</td>        
+        <td>{{ youtube.youtube_channel_count|intcomma }}</td>
+        <td>{{ youtube.youtube_content_like_count|intcomma }}</td>
+        <td>{{ youtube.youtube_comment_like_count|intcomma }}</td>
+        <td>{{ youtube.youtube_content_date}}</td>
+
+        <td><a href="{% url 'youtube_update' youtube.youtube_id %}">
+            <button class='btn'>수정</button></a></td>
+        <td><a href="{% url 'youtube_delete' youtube.youtube_id %}" 
+                onclick="return confirm('삭제하시겠습니까?') && confirm('진짜 삭제하시겠습니까?') && confirm('!!!!!!!!!!!!!!!!!!!')">
+            <button class='btn'>삭제</button></a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

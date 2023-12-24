@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- base.html 랑 다른 title -->
+<!-- {% block title %} 숙소 리스트:{{ keyword }}{% endblock %} -->
+
+
+{% block content %}
+
+
+{% comment %} {% block super %} {% endcomment %}
+
+
+<!-- Search Start -->
+
+<div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+    <div class="container">
+        <div class="row g-2">
+            <div class="col-md-10">                
+                <input type="text" class='form-control border-0 py-3' id='search_keyword' placeholder={{ keyword }}>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark border-0 w-100 py-3" onclick="search_result()">검색</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search End -->
+
+
+
+
+
+
+
+{% comment %} 검색 결과 start {% endcomment %}
+
+<div class="container-xxl py-5">    
+    <div class="container">
+        <div class="row g-0 gx-5 align-items-end">
+            <div class="col-lg-6">
+                <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                    <h1>숙소</h1>
+                    <h3>"{{ keyword }}" 검색 결과 입니다.</h3>
+                    <!-- <h1 class="mb-3">Property Listing</h1>
+                    <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod sit diam justo sed rebum.</p> -->
+                </div>
+            </div>
+            <!-- <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">Featured</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-2">For Sell</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-3">For Rent</a>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+        <div class="tab-content">
+
+
+
+
+
+
+            <!-- Ordered Start -->
+
+            <div class="col-lg-6 text-start wow slideInRight" data-wow-delay="0.1s">
+                <h3>정렬기준</h3>
+                <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">        
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary" href="{%url 'search_hotels' keyword=keyword %}">최저가</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary" href="{%url 'discount_rate' keyword=keyword %}">할인율</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="{%url 'review_clear' keyword=keyword %}">청결도 평점</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary" href="{%url 'review_service' keyword=keyword %}">서비스 평점</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary" href="{%url 'review_facility' keyword=keyword %}">시설 평점</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary" href="{%url 'review_location' keyword=keyword %}">위치 평점</a>
+                    </li>
+                </ul>
+            </div>
+                        
+            <!-- Ordered End -->
+
+
+            {% comment %} < id="tab-1"> start {% endcomment %}
+
+            <div id="tab-3" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                    <!-- 아이템 반복 시작 -->
+                    <!-- 구현시 받아온 acc_list 만큼 반복 -->
+                    {% for result in clear %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden"> 
+                            <div class="position-relative overflow-hidden">
+                                <!-- 구현시 url 뒤에 값 전달, 임시로 보목동 전달. -->
+                                {% comment %} <a href="{% url 'search_hotels_detail' daily_hotel_num=result.daily_hotel_num %}"><img class="img-fluid" src={{result.daily_hotel_image_link}} alt=""></a> {% endcomment %}
+                                <a href="{{result.daily_hotel_link}}"><img class="img-fluid" src="{{result.daily_hotel_image_link}}" alt=""></a>
+                                <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ result.daily_hotel_name }}</div>
+                                <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{result.daily_hotel_address}}</div>
+                            </div>
+                            <div class="p-4 pb-0">                                
+                                <a href="{{result.daily_hotel_link}}"><h6 class="text-primary mb-3">
+                                데일리 : {{ result.daily_hotel_price|floatformat }}원 | 할인율 : {{ result.daily_hotel_discount_rate }}%
+                                <i class="bi bi-link-45deg"></i></h6></a>
+                                            
+                                <!-- <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p> -->
+
+                            </div>
+                            <div class="flex-fill text-center border-end py-2">리뷰평점</div>
+                            <div class="d-flex border-top">                                                                
+                                <small class="flex-fill text-center border-end py-2"><i class="bi bi-stars"></i><a href="#">청결도 {{ result.daily_hotel_review_clear }}</a></small>
+                                <small class="flex-fill text-center border-end py-2"><i class="bi bi-chat-right-heart"></i><a href="#">서비스 {{ result.daily_hotel_review_service }}</a></small>
+                            </div>
+                            <div class="d-flex border-top">                                                                
+                                <small class="flex-fill text-center border-end py-2"><i class="bi bi-building"></i><a href="#">시설 {{ result.daily_hotel_review_facility }}</a></small>
+                                <small class="flex-fill text-center py-2"><i class="bi bi-geo-alt-fill"></i><a href="#">위치 {{ result.daily_hotel_review_location }}</a></small>
+                            </div>                                                       
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i class="bi bi-cup-hot-fill text-primary me-2"></i><a href="{% url 'show_map' daily_hotel_name=result.daily_hotel_name %}">숙소위치</a></small>
+                                <small class="flex-fill text-center border-end py-2"><i class="bi bi-cup-hot-fill text-primary me-2"></i><a href="{% url 'map_main_detail_address' address=result.daily_hotel_address %}">맛집</a></small>
+                                <small class="flex-fill text-center border-end py-2"><i class="bi bi-camera-fill text-primary me-2"></i><a href="{% url 'attraction' keyword=result.daily_hotel_name %}">여행지</a></small>
+                                <small class="flex-fill text-center border-end py-2"><i class="bi bi-youtube text-primary me-2"></i><a href="{% url 'youtube_list' keyword=result.daily_hotel_name %}">유튜브</a></small>
+                                <small class="flex-fill text-center py-2"><i class="bi bi-browser-chrome text-primary me-2"></i><a href="{% url 'naver_blog_list' keyword=result.daily_hotel_name %}">블로그</a></small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- 아이템 반복 끝 -->
+ 
+                    <!-- <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+                        <a class="btn btn-primary py-3 px-5" href="">Browse More Property</a>
+                    </div> -->
+
+                </div>
+            </div>            
+
+            {% comment %} <div id="tab-1"> end {% endcomment %}
+
+{% endblock content %}

@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% load youtube_filters %}
+
+<!-- base.html 랑 다른 title -->
+{% comment %} {% block title %} Youtube list:{{ keyword }}{% endblock %} {% endcomment %}
+
+{% comment %} <iframe width="560" height="315" src="{{ youtube.youtube_link|youtube_embed_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> {% endcomment %}
+ 
+{% block content %}
+
+{% include "./youtube_all_lists_nav.html" %}
+
+<div class="container-xxl bg-white p-0">
+
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
+
+    <!-- Navbar End -->
+
+
+    <!-- Header Start -->
+    <div class="container-fluid header bg-white p-0"><br><br><br><br>
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            
+            <div class="col-md-6 animated fadeIn">
+                <div class="owl-carousel header-carousel">
+                    <div class="owl-carousel-item">
+                        <a href="{{youtube_data1.youtube_link}}" title="영상을 재생해 보세요">
+                            <img class="img-fluid" src="{{youtube_data1.youtube_image}}" alt="">
+                        </a>
+                    </div>                
+                    <div class="owl-carousel-item">
+                        <a href="{{youtube_data1.youtube_link}}" title="이미지 클릭시 유투브 페이지로 이동합니다">
+                            <img class="img-fluid" src="{{youtube_data1.youtube_image}}" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>            
+            {% comment %} {% for youtube in youtube_data %} {% endcomment %}            
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadeIn mb-4">{{youtube_data1.youtube_title}}<br><br> <span class="text-primary">[{{youtube_data1.youtube_name}}] <br>{{youtube_data1.youtube_hashtag}}</span></h1>
+                <p class="animated fadeIn mb-4 pb-2"> {{youtube_data1.youtube_date}} </p>
+                <a href="" class="btn btn-primary py-3 px-5 me-3 animated fadeIn">조회수 : {{youtube_data1.youtube_views}} | 추천수 : {{youtube_data1.youtube_content_like_count}} | 첫 댓글 추천수 : {{youtube_data1.youtube_comment_like_count}}</a>
+            </div>            
+            {% comment %} {% endfor %} {% endcomment %}
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Search Start -->
+
+    <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+        <div class="container">
+            <div class="row g-2">
+                <div class="col-md-10">                
+                    <input type="text" class="form-control border-0 py-3" id="search_keyword" placeholder={{ keyword }}>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-dark border-0 w-100 py-3" onclick="search_result()">검색</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search End -->
+
+
+
+
+
+
+    <!-- 유투브 슬라이드 시작 --> 
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <!-- datetime.now() 값이 저장된 row가 있다면 최신영상 중에서 불러와서 보여주기 -->
+                <!-- 오늘의 추천 채널(채널 링크가 있다면) or 오늘의 추천 영상 둘 중 하나 선택 -->
+                <!-- recommend_keyword 사용 -->
+                <h1 class="mb-3">{{keyword}} 오늘의 추천 영상 </h1>
+                
+            </div>
+            <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+
+                <!-- 반복문 시작 -->
+                {% for youtube in youtube_data %}
+                <div class="testimonial-item bg-light rounded p-3">
+                    <div class="bg-white border rounded p-4">
+                        <a href="{{ youtube.youtube_link }}" title="영상으로 이동"><p>{{ youtube.youtube_id  }} :  {{ youtube.youtube_title }}</p></a>
+                        <div class="d-flex align-items-center">
+                            <iframe src="{{ youtube.youtube_link|youtube_embed_url }}"></iframe>
+                            <a href="{{ youtube.youtube_link }}" title="영상으로 이동"><img class="img-fluid flex-shrink-0 rounded"></a>
+                            <a href="{{ youtube.youtube_link }}" title="채널로 이동"><div class="ps-3">
+                                <h6 class="fw-bold mb-1">{{ youtube.youtube_name }}</h6>
+                                <small> 조회수 {{ youtube.youtube_views }}</small>
+                            </div></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- 반복문 끝-->
+
+            </div>
+        </div>        
+    </div>
+    <!-- 유투브 슬라이드 끝 --> 
+
+
+
+
+    <!-- 유투브 리스트 반복 -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-0 gx-5 align-items-end">
+                <div class="col-lg-6">
+                    <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                        <h1 class="mb-3">{{keyword}} : 유투브 리스트</h1>
+                        {% comment %} <p>{user_id} 님께 {recommend_keyword} 와 {related_keyword} 관련 영상을 추천 드립니다</p> {% endcomment %}
+                    </div>
+                </div>
+                <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">{{keyword}}:추천</a>
+                        </li>
+                        <li class="nav-item me-1">
+                            <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-2">{{keyword}}:관련</a>
+                        </li>
+                        <li class="nav-item me-0">
+                            <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-3">{{keyword}}:전체</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+
+
+                <!-- 반복 -->
+                <div id="tab-1" class="tab-pane fade show p-0 active" id="recommend">
+                    <div class="row g-4">
+                        {% for youtube in youtube_data %}
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden">
+                                <div class="position-relative overflow-hidden">
+                                    <a href="{{ youtube.youtube_link }}"><img class="img-fluid" src="{{ youtube.youtube_image }}" alt="" title="클릭 시 유투브 이동"></a>
+                                    <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ youtube.youtube_id }}</div>
+                                    <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">{{ youtube.youtube_name }}</div>
+                                </div>
+                                <div class="p-4 pb-0">
+                                    <h5 class="text-primary mb-3">{{ youtube.youtube_hashtag }}</h5>
+                                    <a class="d-block h5 mb-2" href="">{{ youtube.youtube_title }}</a>
+                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ youtube.youtube_content_date}}</p>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ youtube.youtube_views|intcomma }} </small>
+                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>추천:{{ youtube.youtube_content_like_count|intcomma }}</small>
+                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>첫댓글 추천:{{ youtube.youtube_comment_like_count|intcomma }} </small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- css 무너지지 않도록 3개씩 반복 -->
+                        {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                    </div>
+                </div>
+                <div id="tab-1f" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">                
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <br><div class="col-12 text-center">
+                    <a class="btn btn-primary py-3 px-5" href="https://www.youtube.com/results?search_query={{keyword}}">{{keyword}} : 추천영상 보러가기</a>
+                </div><br>
+
+            </div>
+        </div>
+    </div>
+    <!-- 유투브 반복 끝 -->
+</div>
+
+
+
+<script>
+    function search_result() {
+        let keyword = document.getElementById("search_keyword").value;
+        window.location.href = keyword;
+    }
+</script>
+
+
+{% endblock content %}
+

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="sign_up_box">
+    <form action="" method="post">
+    <br><div><h1>회원 가입</h1></div><br>
+        {% csrf_token %}
+        <table id="sign_up2">
+            {% comment %} <tr>
+                <th class='lbl'>프로필 이미지</th>
+                <td><button type="submit" name ='sign_up_upload_image'></td>
+            </tr> {% endcomment %}
+            <tr>
+                <th class='lbl'>아이디</th>
+                <td><input type="text" name='username'></td>
+            </tr><tr>
+                <th class='lbl'>이메일</th>
+                <td><input type="text" name ='email'></td>
+            </tr><tr>
+                <th class='lbl'>비밀번호</th>
+                <td><input type="password" name ='password'></td>
+            </tr><tr>                
+                <th class='lbl'>성명</th>
+                <td><input type="text" name='user_name'></td>
+            </tr><tr>
+                <th class='lbl'>전화</th>
+                <td><input type="text" name='user_phone'></td>
+            </tr><tr>
+                <th class='lbl'>주소</th>
+                <td><textarea type="text" id=lbl_address name='user_address'></textarea></td>
+            </tr><tr>
+                <th class='lbl'>선호 여행 지역</th>
+                <td>{{form.preferred_region_no}}</td>
+            </tr><tr>
+                <th class='lbl'>선호 숙박 형태</th>
+                <td>{{form.preferred_accommodation_type_no}}</td>
+            </tr><tr>
+                <th class='lbl'>선호 여행 테마</th>
+                <td>{{form.preferred_tour_theme_type_no}}</td>
+            </tr>
+        </table><br>
+        <button id=signUpBtn type="submit" class="btn-primary">가입 완료</button>
+    </form>
+</div>
+
+
+{% comment %} 
+
+    def __str__(self):
+        return self.pubname
+
+
+<select name='preferred_region'><option value="">선호 여행 지역</option></select>
+
+<select name='preferred_accommodation_type'><option value="">선호 숙박 형태</option></select>
+
+<select name='preferred_tour_theme_type'><option value="">선호 여행 테마</option></select>
+
+ {% endcomment %}
+
+{% comment %} 
+            <tr>
+                <th class='lbl'>선호 여행 지역</th>
+                <td><input type="text" name ='preferred_region'></td>
+            </tr><tr>
+                <th class='lbl'>선호 숙박 형태</th>
+                <td><input type="text" name='preferred_accommodation_type'></td>
+            </tr><tr>
+                <th class='lbl'>선호 여행 테마</th>
+                <td><input type="text" name='preferred_tour_theme_type'></td>
+            </tr> {% endcomment %}
+
+
+
+{% endblock content %}
+
+

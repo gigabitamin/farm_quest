@@ -1,0 +1,60 @@
+{% load static %}
+
+{% block content %}  
+
+
+    <!-- 헤더 시작 -->
+
+    <header class="d-flex">
+        <div class="header_logo">
+            <a href="{% url 'index' %}" class="navbar-brand d-flex">
+                <div class="navbar-brand d-flex" style="display:flex; align-items: center; background-color: white;">
+                    <img src="{% static 'image/logo/farm_quest_site.png' %}" style="width: 3vh; height: 3vh;">
+                    <h3 style="margin:0;">팜 퀘스트</h3>
+                </div>
+                
+            </a>
+        </div>
+
+        <div class="navbar-brand">
+            <div class="navbar-brand">
+                <div class="row g-4">
+                    <div class="col-3">
+                        <select id="portal_select" class="form-select">
+                            <option selected>선택</option>
+                            <option value="customer_service_center">고객센터</option>
+                        </select>                    
+                    </div>
+                    <div class="col-4">                
+                        <input type="text" class="form-control" id="search_keyword" placeholder="검색">          
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-dark border-0" onclick="total_search()">검색</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            
+            {% comment %} 로그인 user만 마이페이지에 접근가능, 로그인 안한 사용자의 경우 자동으로 로그인 창으로 리다이렉트 {% endcomment %}  
+            <!-- 회원가입 로그인 박스 시작 - kdy -->
+        <div class="navbar-nav ms-auto">    
+            <div id="loginBox" class="navbar-nav ms-auto">    
+                {% if user.is_authenticated %}
+                    <div id="loginSignIn">{{ user.username }}님 로그인 중</div>
+                    <a href="{% url 'sign_out' %}"><div id="loginSignOut" class="btn-primary">로그아웃</div></a>
+
+                {% else %}
+                    <div id="loginSignUp"><a href="{% url 'sign_up' %}">회원가입</a></div>
+                    <div id="loginSignIn"><a href="{% url 'sign_in' %}">로그인</a></div>
+                {% endif %}    
+            </div>
+            <!-- 회원가입 로그인 박스 끝 - kdy -->
+        </div>
+
+    </header>    
+    <!-- 헤더 끝 -->
+
+
+
+{% endblock content %}

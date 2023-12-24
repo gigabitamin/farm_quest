@@ -1,0 +1,91 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- base.html 랑 다른 title -->
+<!-- {% block title %} 숙소 리스트:{{ keyword }}{% endblock %} -->
+
+
+{% block content %}
+
+
+{% comment %} {% block super %} {% endcomment %}
+
+
+<!-- Search Start -->
+
+<div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+    <div class="container">
+        <div class="row g-2">
+            <div class="col-md-10">                
+                <input type="text" class='form-control border-0 py-3' id='search_keyword' placeholder={{ keyword }}>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark border-0 w-100 py-3" onclick="search_result()">검색</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search End -->
+
+
+
+
+
+<div id="map" style="width:50%; height:600px; margin:0 auto; border:1px solid rgba(0, 185, 142);"></div>
+
+<div style="display:flex;justify-content:center;">
+    <button onclick="setCenter()">지도 중심좌표 이동</button> 
+    {% comment %} <button onclick="panTo()">지도 중심좌표 부드럽게 이동시키기</button> {% endcomment %}
+</div>
+
+{% comment %} if (da_result_0 !== null){
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+        mapOption = { 
+            center: new kakao.maps.LatLng({{da_result_0.y_coordi}}, {{da_result_0.x_coordi}}), // 지도의 중심좌표
+            level: 4 // 지도의 확대 레벨
+        };
+    }
+else {
+    var mapContainer = document.getElementById('map'),
+        mapOption = {
+        center: new kakao.maps.LatLng(33.452613, 126.570888), 
+        level: 4
+        };
+    } {% endcomment %}
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=343f2a0aad277d4c91a920f6892a8e25"></script>
+<script>
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng({{da_result_0.y_coordi}}, {{da_result_0.x_coordi}}), // 지도의 중심좌표
+        level: 4 // 지도의 확대 레벨
+    }
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+function setCenter() {            
+    // 이동할 위도 경도 위치를 생성합니다 
+    var moveLatLon = new kakao.maps.LatLng(33.452613, 126.570888);
+    
+    // 지도 중심을 이동 시킵니다
+    map.setCenter(moveLatLon);
+}
+
+function panTo() {
+    // 이동할 위도 경도 위치를 생성합니다 
+    var moveLatLon = new kakao.maps.LatLng(33.450580, 126.574942);
+    
+    // 지도 중심을 부드럽게 이동시킵니다
+    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+    map.panTo(moveLatLon);            
+}        
+</script>
+
+
+
+
+{% endblock content %}

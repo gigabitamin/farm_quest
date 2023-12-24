@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% load youtube_filters %}
+
+<!-- base.html 랑 다른 title -->
+{% block title %} 회원탈퇴 페이지 {% endblock %}
+{% block content %} 
+
+
+<div class="sign_up_box" >
+    <form method="post" action="{% url 'my_page_delete' %}" name="my_page_delete">
+        <hr>
+        <br>
+        <h1> {{ user_info.username }} 님, 탈퇴하시겠습니까? </h1>
+        <br>
+        {% csrf_token %}
+        <a href="{% url 'my_page_delete_move' user_info.id %}" 
+            onclick="return confirm('탈퇴 하시겠습니까?') && confirm('그동안 이용해주셔서 감사합니다')">
+        <button type="submit">탈퇴 완료</button></a>
+    </form>
+</div>
+<br>
+
+
+
+{% endblock content %}
+

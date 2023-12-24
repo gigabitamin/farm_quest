@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    
+<div class="sign_up_box">
+    <form method="post">
+        <br><div><h1>로그인</h1></div><br>
+        {% csrf_token %}
+        <table id="form_tbl">
+            {{ form }}
+        </table><br><br>
+        <div class=signUpBtn><button id="form_btn" type="submit">로그인</button></div>
+    </form>
+</div>
+
+{% endblock content %}  

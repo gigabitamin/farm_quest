@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- templates/index.html -->
+
+    <form id="cameraForm" method="post" action="{% url 'upload_photo' %}" onsubmit="event.preventDefault(); uploadPhoto();">
+        {% csrf_token %}
+        
+        <!-- <video> 요소를 추가하여 카메라 스트림을 표시 -->
+        <video id="cameraFeed" autoplay style="width: 100%;"></video>
+        
+        <!-- 이미지 캡쳐를 위한 <canvas> 요소 -->
+        <canvas id="canvas" style="display: none;"></canvas>
+
+        <input type="button" value="Open Camera" onclick="openCamera()">
+        <input type="button" value="Capture Photo" onclick="capturePhoto()">
+        
+        <input type="submit" value="Upload Photo">
+    </form>
+
+    <div id="fileInfo"></div>
+    <div id="fileImage"></div>
+
+    
+    <script>
+        let cameraStream = null;
+    
+        function openCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    const videoElement = document.getElementById('cameraFeed');
+                    videoElement.srcObject = stream;
+                    videoElement.play();
+                    cameraStream = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing camera:', error);
+                });
+        }
+    
+        function capturePhoto() {
+            const videoElement = document.getElementById('cameraFeed');
+            const canvasElement = document.getElementById('canvas');
+            const canvasContext = canvasElement.getContext('2d');
+    
+            canvasElement.width = videoElement.videoWidth;
+            canvasElement.height = videoElement.videoHeight;
+            canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+    
+            const imageDataUrl = canvasElement.toDataURL('image/jpeg');
+    
+            // base64 설정
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'photo';
+            hiddenInput.value = imageDataUrl;
+            document.getElementById('cameraForm').appendChild(hiddenInput);
+        }
+        
+        function uploadPhoto() {
+            const form = document.getElementById('cameraForm');
+            const formData = new FormData(form);
+        
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 응답 데이터 처리
+                console.log(data);
+                if (data.file_name) {
+                    const fileImageDiv = document.getElementById('fileImage');
+                    
+                    // 이미지 엘리먼트 생성
+                    const imageElement = document.createElement('img');
+                    // MEDIA_URL을 사용하여 올바른 파일 URL을 구성
+                    imageElement.src = data.file_url;
+                    imageElement.alt = '캡처된 사진';
+                    imageElement.style.width = '100%';
+                    
+                    // 이미지 엘리먼트를 fileImageDiv에 추가
+                    fileImageDiv.innerHTML = '';
+                    fileImageDiv.appendChild(imageElement);
+                    
+                    // fileInfo div에 파일 이름 표시
+                    document.getElementById('fileInfo').innerHTML = '파일명: ' + data.file_name;
+                }
+            })
+            .catch(error => {
+                console.error('에러:', error);
+            });
+        }
+    </script>
+
+
+
+{% endblock content %}
+

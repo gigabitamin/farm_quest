@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- {% block title %} 숙소 상세:{{ keyword }}{% endblock %} -->
+
+
+{% block content %}
+
+<!-- About Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="about-img position-relative overflow-hidden p-5 pe-0">
+                    <img class="img-fluid w-100" src={{accommodation.img_link}} >
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <h1 class="mb-4">{{accommodation.title}}</h1>
+                <p class="mb-4"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{accommodation.address}}</p>
+                {% if accommodation.go_link %}
+                <a href="{{ accommodation.go_link }}"><p><i class="fa fa-check text-primary me-3"></i>여기어때:
+                    {% if accommodation.go_price|floatformat %}
+                        {{ accommodation.go_price|floatformat }}원
+                    {% else %}
+                        정보없음
+                    {% endif %}<i class="bi bi-link-45deg"></i></p></a>
+                {% else %}
+                {% endif %}
+                {% if accommodation.ya_link %}
+                <a href="{{ accommodation.ya_link }}"><p><i class="fa fa-check text-primary me-3"></i>야놀자:
+                    {% if accommodation.ya_price|floatformat %}
+                        {{ accommodation.ya_price|floatformat }}원
+                    {% else %}
+                        정보없음
+                    {% endif %}<i class="bi bi-link-45deg"></i></p></a>
+                {% else %}
+                {% endif %}
+                {% if accommodation.da_link %}
+                <a href="{{ accommodation.da_link }}"><p><i class="fa fa-check text-primary me-3"></i>데일리호텔:
+                    {% if accommodation.da_price|floatformat %}
+                        {{ accommodation.da_price|floatformat }}원
+                    {% else %}
+                        정보없음
+                    {% endif %}<i class="bi bi-link-45deg"></i></p></a>
+                {% else %}
+                {% endif %}
+                {% if accommodation.tr_link %}
+                <a href="{{ accommodation.tr_link }}"><p><i class="fa fa-check text-primary me-3"></i>트립비토즈:
+                    {% if accommodation.tr_price|floatformat %}
+                        {{ accommodation.tr_price|floatformat }}원
+                    {% else %}
+                        정보없음
+                    {% endif %}<i class="bi bi-link-45deg"></i></p></a>
+                {% else %}
+                {% endif %}
+                
+
+                
+                <!-- <a class="btn btn-primary py-3 px-5 mt-3" href="">Read More</a> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+<!-- Property List Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-0 gx-5 align-items-end">
+            <div class="col-lg-6">
+                
+            </div>
+            <!-- <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">Featured</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-2">For Sell</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-3">For Rent</a>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+        <div class="tab-content">
+            <!-- 관광지 시작 -->
+            <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                <h1 class="mb-3" style="display:inline-block;">여행지</h1>
+                <a href="{% url 'attraction' keyword=addr %}"><p style="display:inline-block; margin-left:10px;">더 보기</p></a>
+            </div>
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                     <!-- 구현시 받아온 관광지_리스트 중 3개 반복 -->
+                     {% if attraction_list %}
+                     {% for attraction in attraction_list %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <!-- 구현시 url 뒤에 값 전달 attraction.visitkorea_id -->
+                                <a href="{% url 'attraction_detail' attraction.visitkorea_id %}"><img class="img-fluid" src= {{ attraction.visitkorea_firstimage }} alt=""></a>
+                                <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ attraction.visitkorea_title }}</div>
+                                <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ attraction.visitkorea_address }}</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <!-- <h6 class="text-primary mb-3">기타설명</h6> -->
+                                <p id="attraction_overview_summary">
+                                    {{ attraction.visitkorea_overview}}</p>                           
+                            </div>               
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h3>관광지 검색 결과가 없습니다</h3>                      
+                    {% endif %}
+                     <!-- 아이템 반복 끝 -->
+                </div>
+            </div>
+            <!-- 관광지 끝 -->
+
+            <!-- 맛집 시작 -->
+            <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                <h1 class="mb-3" style="display:inline-block;">맛집</h1>
+                <a href="{% url 'map_main' %}"><p style="display:inline-block; margin-left:10px;">더 보기</p></a>
+            </div>
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                     <!-- 구현시 받아온 맛집_리스트 중 3개 반복 -->
+                     {% if restaurant_list %}
+                     {% for restaurant in restaurant_list %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <!-- 구현시 url 뒤에 값 전달 -->
+                                <a href={{ restaurant.restaurant_link }}><img class="img-fluid" src={{ restaurant.restaurant_image }} alt=""></a>
+                                <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ restaurant.restaurant_shop_name  }}</div>
+                                <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ restaurant.restaurant_address }}</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                             
+                            </div>
+                    
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h3>맛집 검색 결과가 없습니다</h3>                      
+                    {% endif %}
+                     <!-- 아이템 반복 끝 -->
+                </div>
+            </div>
+            <!-- 맛집 끝 -->
+
+            <!-- 유튜브 시작 -->
+            <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                <h1 class="mb-3" style="display:inline-block;">유튜브</h1>
+                <a href="{% url 'youtube_list' keyword='제주도' %}"><p style="display:inline-block; margin-left:10px;">더 보기</p></a>
+            </div>
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                     <!-- 구현시 받아온 유트브_리스트 중 3개 반복 -->
+                     {% if youtube_list %}
+                     {% for youtube in youtube_list %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <!-- 구현시 url 뒤에 값 전달 -->
+                                <a href={{ youtube.youtube_link }}><img class="img-fluid" src={{ youtube.youtube_image }} alt=""></a>
+                                <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ youtube.youtube_name }}</div>
+                                <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3" style= "max-width: 86%;">
+                                    <div class="overflow-hidden text-nowrap text-truncate"><i class="bi bi-binoculars-fill"></i>{{ youtube.youtube_views }} &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-calendar3"></i>업로드 날짜 :{{ youtube.youtube_date }}</div>
+                                </div> 
+                            </div>
+                            <div class="p-4 pb-0">
+                                <p id="attraction_overview_summary">{{ youtube.youtube_title }}</p>
+                           
+                            </div>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h3>유튜브 검색 결과가 없습니다</h3>                      
+                    {% endif %}
+                     <!-- 아이템 반복 끝 -->
+                </div>
+            </div>
+            <!-- 유튜브 끝 -->
+
+            <!-- 블로그 시작  -->
+            <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                <h1 class="mb-3" style="display:inline-block;">블로그</h1>
+                <a href="{% url 'naver_blog_list' keyword='제주도' %}"><p style="display:inline-block; margin-left:10px;">더 보기</p></a>
+            </div>
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                     <!-- 구현시 받아온 블로그_리스트 중 3개 반복 -->
+                    {% if blog_list %}
+                        {% for blog in blog_list %}
+                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="property-item rounded overflow-hidden">
+                                    <div class="position-relative overflow-hidden">
+                                        <!-- 구현시 url 뒤에 값 전달 -->
+                                        <a href="{{ blog.naver_blog_link  }}"><img class="img-fluid" src="{% static 'img/no-img.png' %}" alt=""></a>
+                                        <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ blog.naver_bloger_name }}</div>
+                                        <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3" style= "max-width: 86%;">
+                                            <div class="overflow-hidden text-nowrap text-truncate">{{ blog.naver_blog_content_date }}</div>
+                                        </div> 
+                                    </div>
+                                    <div class="p-4 pb-0">
+                                        <h6 class="text-primary mb-3">{{ blog.naver_blog_title }}</h6>
+                                        <!-- <p><i class="fa fa-map-marker-alt text-primary me-2"></i>기타설명</p> -->
+                                        <!-- <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p> -->
+                                    </div>
+                                    <!-- <div class="d-flex border-top">
+                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>맛집</small>
+                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>관광지</small>
+                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>블로그</small>
+                                        <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>유튜브</small>
+                                    </div> -->
+                                </div>
+                            </div>
+                        {% endfor %}                       
+                    {% else %}
+                    <h3>블로그 검색 결과가 없습니다</h3>                      
+
+                    {% endif %}
+                    
+                     <!-- 아이템 반복 끝 -->
+                </div>
+            </div>
+            <!-- 블로그 끝 -->
+        </div>
+    </div>
+</div>
+<!-- Property List End -->
+
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+<!-- base.html 랑 다른 title -->
+{% block title %} {{ user_info.username }} 님의 마이페이지 {% endblock %}
+
+{% block content %} 
+
+{% comment %} {% include "./my_page_nav.html" %} {% endcomment %}
+{% comment %} if is_superusr == True 이면 유저 정보 삭제 권한 등이 있는 admin 페이지 출력 {% endcomment %}
+
+
+<div class="sign_up_box">
+    <form action="#" method="post">
+    <br><div><h1>{{ user_info.username }} 님의 마이 페이지</h1></div><br>
+        {% csrf_token %}
+        <table id="my_page_table">
+            <tr><th class='lbl'>회원 번호</th><td>{{user_info.id}}</td></tr>
+            {% comment %} <tr><th class='lbl'>프로필 이미지</th><td><button type="submit" name ='sign_up_upload_image'></td></tr> {% endcomment %}
+            <tr><th class='lbl'>가입 날짜</th><td>{{ user_info.date_joined }}</td></tr>
+            <tr><th class='lbl'>마지막 접속 날짜</th><td>{{ user_info.last_login }}</td></tr>
+            <tr><th class='lbl'>아이디</th><td>{{ user_info.username }}</td></tr>
+            <tr><th class='lbl'>이메일</th><td>{{ user_info.email }}</td></tr>
+            {% comment %} <tr><th class='lbl'>패스워드</th><td><input type="password" name ='password'></td></tr> {% endcomment %}
+            <tr><th class='lbl'>성명</th><td>{{ user_info.user_name }}</td></tr>
+            <tr><th class='lbl'>전화번호</th><td>{{ user_info.user_phone }}</td></tr>
+            <tr><th class='lbl'>주소</th><td>{{ user_info.user_address }}</textarea></td></tr>
+            <tr><th class='lbl'>선호 여행 지역</th><td>{{user_info.preferred_region_no.preferred_region}}</td></tr>
+            <tr><th class='lbl'>선호 숙박 형태</th><td>{{user_info.preferred_accommodation_type_no.preferred_accommodation_type}}</td></tr>
+            <tr><th class='lbl'>선호 여행 테마</th><td>{{user_info.preferred_tour_theme_type_no.preferred_tour_theme_type}}</td></tr>
+        </table>
+    </form>  
+</div>
+<div class="sign_up_box" class="btn-primary">
+    <a href="{% url 'my_page_update' user_info.id %}">
+        <button id=myPageUpdateBtn type="submit" class="btn-primary">회원 정보 수정</button></a>
+    <a href="{% url 'my_page_delete_move' user_info.id %}">
+        <button id=myPageUpdateBtn type="submit">회원 탈퇴</button></a> 
+</div>
+
+
+<div class="sign_up_box">
+
+</div>
+
+
+
+
+
+{% endblock content %}
+

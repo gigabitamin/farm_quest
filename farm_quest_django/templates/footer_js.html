@@ -1,0 +1,51 @@
+{% load static %}
+
+{% block content %}  
+    
+    <!-- JavaScript Libraries -->
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+     <!-- Template Javascript -->
+     <script src="{% static 'js/main.js' %}"></script> 
+
+    <!-- 카카오톡 상담하기 버튼 추가를 위한 script - kyj -->
+    <script>
+      window.kakaoAsyncInit = function() {
+        Kakao.Channel.createChatButton({
+          container: '#kakao-talk-channel-chat-button',          
+        });
+      };
+    
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.channel.min.js'; // 경로 수정 -kdy
+        {% comment %} js.integrity = 'sha384-bg2pMhokxyx1zeEM2ol2hJtBagKMjRIZDVI/KITe+j2U5K+Or6HPY1lWDWY8ubEN'; {% endcomment %}
+        js.crossOrigin = 'anonymous';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'kakao-js-sdk');      
+    </script>
+
+    {% comment %} 검색창 관련 {% endcomment %}
+
+    <script>
+        function total_search() {
+            var keyword = document.getElementById("search_keyword").value;
+            var portalSelect = document.getElementById("total_select");
+            var selectedPortal = portalSelect.options[portalSelect.selectedIndex].value;
+            var url = "http://127.0.0.1:8000/" + selectedPortal + "/" + encodeURIComponent(keyword);
+                    
+
+            if (keyword != ''){
+                window.location.href = url;
+            }        
+        } 
+    </script>
+
+{% endblock content %}  

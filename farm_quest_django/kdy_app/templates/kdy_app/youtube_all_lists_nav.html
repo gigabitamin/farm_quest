@@ -1,0 +1,68 @@
+
+{% load static %}
+{% load youtube_filters %}
+
+
+{% block content %}  
+
+<style>
+    #youtube_all_lists_nav {
+        background-color: #white !important;         
+        padding: 10px;
+        border: 1px solid rgba(0, 185, 142);
+        border-radius: 5px;
+        position: fixed;
+        bottom: 0; /* 화면 하단에 고정 */        
+    }
+</style>
+
+
+<div id="youtube_all_lists_nav">
+
+    {% if user_info.is_authenticated %}
+        <a href="{% url 'search_hotels' keyword=user_info.preferred_region_no.preferred_region %}" class="nav-item nav-link">호텔 검색</a>
+    {% else %}
+        <a href="{% url 'search_hotels' keyword='서울' %}" class="nav-item nav-link">호텔 검색</a>
+    {% endif %}
+    
+
+
+    <div>
+    {% comment %} 로그인 user만 마이페이지에 접근가능, 로그인 안한 사용자의 경우 자동으로 로그인 창으로 리다이렉트 {% endcomment %}                    
+    {% if user_info.is_authenticated %}
+        <a href="{% url 'my_page' %}" class="nav-item nav-link">MY PAGE:{{user.username}}</a>
+    {% else %}
+        <a href="{% url 'sign_in' %}" class="nav-item nav-link">MY PAGE</a>
+    {% endif %}
+    </div>
+    <!-- 카카오톡 상당하기 버튼 시작 - kyj -->
+    <a
+        id="kakao-talk-channel-chat-button"
+        data-channel-public-id="_webTG"
+        data-title="consult"
+        data-size="small"
+        data-color="yellow"
+        data-shape="pc"
+        data-support-multiple-densities="true"
+    ></a>
+    <!-- 카카오톡 상당하기 버튼 끝 -->
+
+     <!-- 카카오톡 메세지 공유 버튼 시작 - kdy -->    
+     <div id="kakao_message_t_btn">
+     <a href='#'><img src="{% static 'img/kakao_disign/kakaotalk_sharing_btn/kakaotalk_sharing_btn_medium.png' %}" alt="" title="카카오톡 메세지 공유"/><br>메세지 공유</a>
+     </div>
+     
+     <!-- 카카오톡 메세지 공유 버튼 끝 --> 
+    <hr>
+    <div><a href="{% url 'youtube_list' keyword='제주도' %}" class="nav-item nav-link btn btn-outline-primary">{{keyword}}:HOME</a></div>
+    {% comment %} <div><a href="{% url 'youtube_list' keyword='제주도' %}#tab-1" class="btn btn-outline-primary" data-bs-toggle="pill">{{keyword}}:추천영상</a></div>
+    <div><a href="{% url 'youtube_list' keyword='제주도' %}#tab-2" class="btn btn-outline-primary" data-bs-toggle="pill">{{keyword}}:관련영상</a></div>
+    <div><a href="{% url 'youtube_list' keyword='제주도' %}#tab-3" class="btn btn-outline-primary" data-bs-toggle="pill">{{keyword}}:전체영상</a></div> {% endcomment %}
+    <hr>
+    <div><a href="{% url 'youtube_all_lists' %}">전체 조회</a></div>
+    <div><a href="{% url 'youtube_insert' %}">등록</a></div>
+    {% comment %} <div><a href="{% url 'youtube_search_custom_form' %}">검색 Custom</a></div>
+    <div><a href="{% url 'youtube_search_ajax_form' %}">검색 Ajax</a></div>          {% endcomment %}
+</div>
+
+{% endblock content %}
