@@ -21,16 +21,19 @@
 
 <div class="main_side_nav">
 
+    <div><a href="{% url 'index' %}" class="nav-link btn btn-outline-primary">홈</a></div>
+    <hr>
+    <div>
     {% comment %} 로그인 user만 마이페이지에 접근가능, 로그인 안한 사용자의 경우 자동으로 로그인 창으로 리다이렉트 {% endcomment %}                    
     {% if user_info.is_authenticated %}
-        <a href="{% url 'my_page' %}" class="nav-link btn btn-outline-primary">개인 페이지<br>{{user.username}}</a>
+        <a href="{% url 'my_page' %}" class="nav-link btn btn-outline-primary">{{user.username}}<hr>마이 팜</a>
     {% else %}
-        <a href="{% url 'sign_in' %}" class="nav-link btn btn-outline-primary">개인 페이지</a>
+        <a href="{% url 'sign_in' %}" class="nav-link btn btn-outline-primary">마이 팜</a>
     {% endif %}
+    </div>
 
+    
 
-    <hr>
-    <div><a href="{% url 'index' %}" class="nav-link btn btn-outline-primary">HOME</a></div>
 
 </div>
 

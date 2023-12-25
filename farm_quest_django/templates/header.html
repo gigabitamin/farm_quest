@@ -41,8 +41,8 @@
         <div class="navbar-nav ms-auto">    
             <div id="loginBox" class="navbar-nav ms-auto">    
                 {% if user.is_authenticated %}
-                    <div id="loginSignIn">{{ user.username }}님 로그인 중</div>
-                    <a href="{% url 'sign_out' %}"><div id="loginSignOut" class="btn-primary">로그아웃</div></a>
+                    <div id="loginSignIn">{{ user.username }}</div>
+                    <a href="{% url 'sign_out' %}"><div id="loginSignOut" class="btn-primary">Logout</div></a>
 
                 {% else %}
                     <div id="loginSignUp"><a href="{% url 'sign_up' %}">회원가입</a></div>

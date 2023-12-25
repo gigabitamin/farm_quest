@@ -21,16 +21,20 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">메뉴</a>
                         <div class="dropdown-menu">
                             <a href="{% url 'customer_service_center' %}" class="nav-item nav-link">고객센터<br><br></a>
+                            {% comment %} 로그인 user만 마이페이지에 접근가능, 로그인 안한 사용자의 경우 자동으로 로그인 창으로 리다이렉트 {% endcomment %}                    
+                            {% if user_info.is_authenticated %}
+                                <a href="{% url 'my_page' %}" class="nav-item nav-link">개인 페이지</a>
+                            {% else %}
+                                <a href="{% url 'sign_in' %}" class="nav-item nav-link">개인 페이지</a>
+                            {% endif %}
                         </div>
+
                     </div> 
 
                     
 
-                    <a href="{% url 'customer_service_center' %}" class="nav-item nav-link">고객센터<br><br></a>                   
-
-                    {% comment %} 로그인 user만 마이페이지에 접근가능, 로그인 안한 사용자의 경우 자동으로 로그인 창으로 리다이렉트 {% endcomment %}                    
-                    <a href="{% url 'sign_in' %}" class="nav-item nav-link">개인 페이지</a>
-
+                                       
+                    
 
                 </div>
                
