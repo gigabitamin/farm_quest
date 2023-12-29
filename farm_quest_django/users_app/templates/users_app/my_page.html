@@ -26,9 +26,9 @@
             <tr><th class='lbl'>성명</th><td>{{ user_info.user_name }}</td></tr>
             <tr><th class='lbl'>전화번호</th><td>{{ user_info.user_phone }}</td></tr>
             <tr><th class='lbl'>주소</th><td>{{ user_info.user_address }}</textarea></td></tr>
-            <tr><th class='lbl'>선호 여행 지역</th><td>{{user_info.preferred_region_no.preferred_region}}</td></tr>
+            {% comment %} <tr><th class='lbl'>선호 여행 지역</th><td>{{user_info.preferred_region_no.preferred_region}}</td></tr>
             <tr><th class='lbl'>선호 숙박 형태</th><td>{{user_info.preferred_accommodation_type_no.preferred_accommodation_type}}</td></tr>
-            <tr><th class='lbl'>선호 여행 테마</th><td>{{user_info.preferred_tour_theme_type_no.preferred_tour_theme_type}}</td></tr>
+            <tr><th class='lbl'>선호 여행 테마</th><td>{{user_info.preferred_tour_theme_type_no.preferred_tour_theme_type}}</td></tr> {% endcomment %}
         </table>
     </form>  
 </div>

@@ -1,8 +1,11 @@
 # 회원가입 로그인
 
+import statistics
+from urllib import response
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from .models import User, UsersAppUser
 from .forms import CustomUserCreationForm, UserForm, UserInfoForm
 
@@ -11,7 +14,7 @@ from .forms import CustomUserCreationForm, UserForm, UserInfoForm
 from imaplib import _Authenticator
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
 
@@ -35,6 +38,81 @@ import os
 from django.shortcuts import get_object_or_404, render, redirect
 
 
+# 리액트 연동
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
+
+
+
+# DRF
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+from .models import User
+
+from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
+from .models import Profile
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+
+
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = serializer.validated_data
+        return Response({"token": token.key}, status=status.HTTP_200_OK)
+
+
+class ProfileView(generics.GenericAPIView):
+    serializer_class = ProfileSerializer
+
+    def patch(self, request):
+        profile = Profile.objects.get(user=request.user)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        profile.nickname = data['nickname']
+        profile.position = data['position']
+        profile.subjects = data['subjects']
+        if request.data['image']:
+            profile.image = request.data['image']
+        profile.save()
+        return Response({"result": "ok"},
+                        status=status.HTTP_206_PARTIAL_CONTENT)
+
+    def get(self, request):
+        profile = Profile.objects.get(user=request.user)
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
+
+
+
+
+
+
+# 리액트 연동
+
+def sign_in2(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)            
+            return JsonResponse({'message': '로그인 성공'})
+        else:            
+            return JsonResponse({'message': '로그인 실패'}, status=400)
+
+
+
+# 장고
 
 def sign_in(request):
     if request.method == 'POST':
@@ -43,11 +121,13 @@ def sign_in(request):
         if form.is_valid():
             login(request, form.get_user())
             return redirect('index')
-        
+
     else:
         form = AuthenticationForm()
 
     return render(request, 'users_app/sign_in.html', {'form':form})
+
+
 
 def sign_out(request):
     logout(request)
@@ -73,9 +153,9 @@ def sign_up2(request):
         user_name = request.POST['user_name']
         user_phone = request.POST['user_phone']
         user_address = request.POST['user_address']
-        preferred_region_no = request.POST['preferred_region_no']
-        preferred_accommodation_type_no = request.POST['preferred_accommodation_type_no']
-        preferred_tour_theme_type_no = request.POST['preferred_tour_theme_type_no']
+        # preferred_region_no = request.POST['preferred_region_no']
+        # preferred_accommodation_type_no = request.POST['preferred_accommodation_type_no']
+        # preferred_tour_theme_type_no = request.POST['preferred_tour_theme_type_no']
 
         user = UserForm(request.POST)
         # 매개변수는 3개만 전달 가능
@@ -86,9 +166,9 @@ def sign_up2(request):
         user.user_name = user_name
         user.user_phone = user_phone
         user.user_address = user_address
-        user.preferred_region_no = preferred_region_no
-        user.preferred_accommodation_type_no = preferred_accommodation_type_no
-        user.preferred_tour_theme_type_no = preferred_tour_theme_type_no
+        # user.preferred_region_no = preferred_region_no
+        # user.preferred_accommodation_type_no = preferred_accommodation_type_no
+        # user.preferred_tour_theme_type_no = preferred_tour_theme_type_no
             
         user.save()        
 
@@ -98,8 +178,6 @@ def sign_up2(request):
         form = UserForm()
 
     return render(request, 'users_app/sign_up2.html', {'form':form})
-
-
 
 
 
@@ -119,11 +197,11 @@ def my_page(request):
 
     api = NaverDataLabOpenAPI(client_id, client_secret)
 
-    group_dict = {
-        'groupName': f'{user_info.preferred_accommodation_type_no.preferred_accommodation_type} {user_info.preferred_tour_theme_type_no.preferred_tour_theme_type} 통합 검색 트렌드',
-        'keywords': [user_info.preferred_accommodation_type_no.preferred_accommodation_type, user_info.preferred_tour_theme_type_no.preferred_tour_theme_type]
-    }
-    api.add_keyword_groups(group_dict)
+    # group_dict = {
+    #     'groupName': f'{user_info.preferred_accommodation_type_no.preferred_accommodation_type} {user_info.preferred_tour_theme_type_no.preferred_tour_theme_type} 통합 검색 트렌드',
+    #     'keywords': [user_info.preferred_accommodation_type_no.preferred_accommodation_type, user_info.preferred_tour_theme_type_no.preferred_tour_theme_type]
+    # }
+    # api.add_keyword_groups(group_dict)
 
     startDate = first_date_str
     endDate = last_date_str

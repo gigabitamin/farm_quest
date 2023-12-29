@@ -35,7 +35,8 @@
                 <th class='lbl'>주소</th>
                 <td><textarea type="text" id=lbl_address name='{{ user_info.user_address }}' value="{{ user_info.user_address }}"></textarea></td>
             </tr>
-            <tr>
+            
+            {% comment %} <tr>
                 <th class='lbl'>선호 여행 지역</th>
                 <td>{{user_form.preferred_region_no}}</td>
             </tr><tr>
@@ -44,7 +45,7 @@
             </tr><tr>
                 <th class='lbl'>선호 여행 테마</th>
                 <td>{{user_form.preferred_tour_theme_type_no}}</td>
-            </tr>
+            </tr> {% endcomment %}
 
 
 

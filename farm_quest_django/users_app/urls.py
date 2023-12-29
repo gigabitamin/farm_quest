@@ -1,14 +1,27 @@
 from django.urls import path
+# from django.contrib.auth import views as auth_views
 from . import views
-from django.contrib.auth import views as auth_views
+from .views import RegisterView, LoginView, ProfileView
+
+
 
 urlpatterns = [
     # 로그인
-    path('sign_in', views.sign_in, name='sign_in'),
-    path('sign_in2', auth_views.LoginView.as_view(template_name='users_app/sign_in2.html'), name='sign_in2'),
+    path('sign_in', views.sign_in, name='sign_in'),    
     path('sign_out', views.sign_out, name='sign_out'),    
     path('sign_up', views.sign_up, name='sign_up'),
     path('sign_up2', views.sign_up2, name='sign_up2'),
+    
+    # DRF
+    path('register/', RegisterView.as_view()),
+    path('login/', LoginView.as_view()),
+    path('profile/', ProfileView.as_view()),
+    
+    
+    # 리액트 연동
+    path('sign_in2', views.sign_in2, name='sign_in2'),    
+    # path('sign_up3', UserCreateView.as_view(), name='user-create'),
+        
     
     # 마이 페이지
     path('my_page/', views.my_page, name='my_page'),

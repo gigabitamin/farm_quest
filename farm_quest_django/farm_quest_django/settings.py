@@ -34,8 +34,14 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'farm_quest_app',
     'users_app',
-
-                    
+    
+    # 리액트 연동    
+    'rest_framework',
+    'rest_framework.authtoken',    
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
+    'posts',
+                
     # https ssl - kdy
     # 'django_extensions',
     # 'sslserver',
@@ -43,7 +49,13 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+        
+    # 리액트 연동 (순서 중요)
+    'corsheaders.middleware.CorsMiddleware',        
+    
+    # 원본
     'django.middleware.security.SecurityMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,6 +63,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# 리액트 연동
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",  # React 개발 서버의 주소    
+# ]
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+
 
 ROOT_URLCONF = 'farm_quest_django.urls'
 
@@ -129,7 +151,6 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
     os.path.join(BASE_DIR, 'static') # 경로처리 -kdy
 ]
-
 
 
 # Default primary key field type
